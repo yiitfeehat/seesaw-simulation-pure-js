@@ -1,0 +1,90 @@
+/* =========================================
+   1. VARIABLES 
+   ========================================= */
+
+:root {
+    --color-bg: #F3F4F6;
+    --color-primary: #4F46E5;
+    --color-secondary: #E0E7FF;
+    --color-text-main: #1F2937;
+    --color-text-light: #6B7280;
+    --color-plank: #374151;
+    --color-pivot: #DC2626;
+
+    /* Dimensions */
+    --plank-width: min(600px, 90vw);
+    --plank-height: 10px;
+    --pivot-size: 40px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text-main);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+/* =========================================
+   2.  UI & Stats
+   ========================================= */
+
+#app {
+    width: 100% ;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem;
+}
+.app-header h1{
+    font-size: 1.5rem;
+    text-align: center;
+}
+.app-header p{
+    color: var(--color-text-light);
+    text-align: center;
+}
+
+.ui-panel {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 600px;
+    gap: 1rem;
+}
+
+.stat-box {
+    background-color: var(--color-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.stat-box .label {
+    font-size: 0.7rem;
+    color: var(--color-text-light);
+    font-weight: 600;
+}
+
+.stat-box .value {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--color-primary);
+}
+
+
+
