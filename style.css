@@ -206,3 +206,13 @@ body {
 
 
 }
+
+/* =========================================
+    5. WEIGHT BOXES 
+   ========================================= */
+
+.weight-box{
+    position: absolute;
+    pointer-events: none; /*fixing position bug*/
+    
+}

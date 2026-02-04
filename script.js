@@ -46,7 +46,7 @@ plankElement.addEventListener('click', function (event) {
     let distance = clickPosition - centerPoint;
 
     let side = ''; // null? 
-    if (distance<0){
+    if (distance < 0) {
         side = 'left';
     } else {
         side = 'right';
@@ -59,8 +59,47 @@ plankElement.addEventListener('click', function (event) {
     console.log('Mutlak uzaklik', absoluteDistance)
     console.log('right or left ? ', side)
 
-
+    createRandomWeights(absoluteDistance, side);
 })
 
+// ==========================================
+//  ADDING WEIGHTS (CREATE WEIGHT) 
+// ==========================================
 
+function createRandomWeights(distance, side) {
+
+    // Rastgele Sayı üretelim.
+
+    let randomWeight = Math.ceil(Math.random() * CONFIG.MAX_WEIGHT);
+    // We can use math.floor too but its easiest way.
+
+    let newBox = document.createElement('div');
+
+    newBox.classList.add('weight-box');
+
+    newBox.textContent = randomWeight + 'kg';
+    newBox.style.left = (side === 'left')
+        ? (300 - distance) + 'px'
+        : (300 + distance) + 'px'; 
+    
+    //! newBox.style.transform = ??
+ 
+    let boxSize = 30 + (randomWeight * 3);
+    newBox.style.width= boxSize + 'px';
+    newBox.style.height= boxSize + 'px';
+
+    const colors = ['red','yellow','cyan','purple','aqua','orange','green'];
+
+    let randomColor = colors[Math.floor(Math.random()* colors.length)];
+
+    newBox.style.backgroundColor = randomColor; //now, the box colored.
+
+    plankElement.appendChild(newBox);
+
+    console.log('ağırlık eklendi')
+
+
+
+
+}
 
