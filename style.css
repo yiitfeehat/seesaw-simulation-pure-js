@@ -8,6 +8,7 @@
     --color-secondary: #E0E7FF;
     --color-text-main: #1F2937;
     --color-text-light: #6B7280;
+    --color-game-area-bg: #FFFFFF;
     --color-plank: #374151;
     --color-pivot: #DC2626;
 
@@ -103,6 +104,7 @@ body {
     justify-content: flex-end;
     padding: 1rem;
     overflow: hidden;
+    background-color: var(--color-game-area-bg);
 
 }
 
@@ -120,6 +122,8 @@ body {
     height: var(--plank-height);
     background-color: var(--color-plank);
     position: relative;
+    border-radius: 20px;
+
 }
 
 .ruler-markers {
@@ -128,12 +132,12 @@ body {
     height: 100%;
     top: 0;
     left: 0px;
-    border: 3px solid orange;
+    /* border: 3px solid orange; */
 }
 
 .marker {
     position: absolute;
-    top: 5px;
+    top: 10px;
     /* margin-left: -4px; */
     color: grey;
     font-weight: 600;
@@ -143,6 +147,10 @@ body {
 
 }
 
+.center-point {
+    display: none;
+}
+
 .pivot {
     width: 0px;
     height: 0px;
@@ -150,7 +158,49 @@ body {
     border-left: calc(var(--pivot-size)/2) solid transparent;
     border-right: calc(var(--pivot-size)/2) solid transparent;
     border-bottom: var(--pivot-size) solid var(--color-pivot);
+    margin-top: -3px;
+}
 
+/* =========================================
+   4. PAUSE / RESET (CONTROL BUTTONS)
+   ========================================= */
+
+.controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 7px;
+    font-weight: 700;
+    cursor: pointer;
+    color: white;
+    transition: all 0.4s;
+    box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-pause {
+    background-color: rgb(0, 128, 255);
+}
+
+.btn-pause:hover {
+    background-color: rgb(0, 51, 255);
+    box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.1);
+
+
+
+}
+
+.btn-reset {
+    background-color: red;
+
+}
+
+.btn-reset:hover {
+    background-color: rgb(112, 3, 3);
+    box-shadow: 0 1px 1px 2px rgba(112, 3, 3, 0.1);
 
 
 }
