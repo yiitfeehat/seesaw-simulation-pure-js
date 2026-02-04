@@ -32,3 +32,35 @@ const resetButton = document.getElementById('btn-reset');
 console.log(CONFIG.PLANK_LENGHT)
 console.log(leftWeightValue.textContent)*/
 
+// ==========================================
+// PLANK AND CLICK LOGIC 
+// ==========================================
+
+plankElement.addEventListener('click', function (event) {
+
+    let clickPosition = event.offsetX;
+    let centerPoint = CONFIG.PLANK_LENGHT / 2;
+
+    //for calculate distance from center point
+
+    let distance = clickPosition - centerPoint;
+
+    let side = ''; // null? 
+    if (distance<0){
+        side = 'left';
+    } else {
+        side = 'right';
+    }
+
+    let absoluteDistance = Math.abs(distance); // distance value should be positive value
+
+    console.log('Tıklanan yer:', clickPosition)
+    console.log('Orta noktam', centerPoint)
+    console.log('Mutlak uzaklik', absoluteDistance)
+    console.log('right or left ? ', side)
+
+
+})
+
+
+

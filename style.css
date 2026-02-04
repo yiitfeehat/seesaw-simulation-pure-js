@@ -110,7 +110,7 @@ body {
 
 .seesaw-container {
     border: 2px solid red;
-    width: 700px;
+    width: 600px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -123,6 +123,7 @@ body {
     background-color: var(--color-plank);
     position: relative;
     border-radius: 20px;
+    cursor: pointer;
 
 }
 
@@ -144,6 +145,7 @@ body {
     font-size: 0.75rem;
     transform: translateX(-50%);
     /* better than margin-left; */
+    pointer-events: none;
 
 }
 
