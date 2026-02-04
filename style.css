@@ -38,7 +38,7 @@ body {
    ========================================= */
 
 #app {
-    width: 100% ;
+    width: 100%;
     max-width: 800px;
     display: flex;
     flex-direction: column;
@@ -46,11 +46,14 @@ body {
     gap: 2rem;
     padding: 1rem;
 }
-.app-header h1{
+
+.app-header h1 {
     font-size: 1.5rem;
     text-align: center;
+    margin-bottom: 0.3rem;
 }
-.app-header p{
+
+.app-header p {
     color: var(--color-text-light);
     text-align: center;
 }
@@ -82,9 +85,72 @@ body {
 
 .stat-box .value {
     font-size: 1rem;
-    font-weight: 800;
+    font-weight: 900;
     color: var(--color-primary);
 }
 
+/* =========================================
+   3. ggame & simulation area 
+   ========================================= */
+
+.simulation-area {
+    border: 2px solid red;
+    width: 100%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem;
+    overflow: hidden;
+
+}
+
+.seesaw-container {
+    border: 2px solid red;
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.plank {
+    width: 100%;
+    height: var(--plank-height);
+    background-color: var(--color-plank);
+    position: relative;
+}
+
+.ruler-markers {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0px;
+    border: 3px solid orange;
+}
+
+.marker {
+    position: absolute;
+    top: 5px;
+    /* margin-left: -4px; */
+    color: grey;
+    font-weight: 600;
+    font-size: 0.75rem;
+    transform: translateX(-50%);
+    /* better than margin-left; */
+
+}
+
+.pivot {
+    width: 0px;
+    height: 0px;
+    /* border: 25px solid red; */
+    border-left: calc(var(--pivot-size)/2) solid transparent;
+    border-right: calc(var(--pivot-size)/2) solid transparent;
+    border-bottom: var(--pivot-size) solid var(--color-pivot);
 
 
+
+}
