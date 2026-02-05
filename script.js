@@ -80,17 +80,17 @@ function createRandomWeights(distance, side) {
     newBox.textContent = randomWeight + 'kg';
     newBox.style.left = (side === 'left')
         ? (300 - distance) + 'px'
-        : (300 + distance) + 'px'; 
-    
+        : (300 + distance) + 'px';
+
     //! newBox.style.transform = ??
- 
+
     let boxSize = 30 + (randomWeight * 3);
-    newBox.style.width= boxSize + 'px';
-    newBox.style.height= boxSize + 'px';
+    newBox.style.width = boxSize + 'px';
+    newBox.style.height = boxSize + 'px';
 
-    const colors = ['red','yellow','cyan','purple','aqua','orange','green'];
+    const colors = ['red', 'yellow', 'cyan', 'purple', 'aqua', 'orange', 'green'];
 
-    let randomColor = colors[Math.floor(Math.random()* colors.length)];
+    let randomColor = colors[Math.floor(Math.random() * colors.length)];
 
     newBox.style.backgroundColor = randomColor; //now, the box colored.
 
@@ -98,8 +98,52 @@ function createRandomWeights(distance, side) {
 
     console.log('ağırlık eklendi')
 
+    let totalWeightsObj = {
+        weight: randomWeight,
+        distance: distance, //absoluteDistance already
+        side: side
+    }
 
+    gameState.objects.push(totalWeightsObj);
 
+    updateGame();
 
 }
 
+// ==========================================
+//  PHYSICS & CALCULATION 
+// ==========================================
+
+// her clickte güncellemek icin
+function updateGame() {
+    calculateTorque();
+    updateSeesawBalance();
+}
+
+// torque
+function calculateTorque() {
+    let leftTorque = 0;
+    let rightTorque = 0;
+
+    for (let i = 0; i < gameState.objects.length; i++) {
+        let obj = gameState.objects[i];
+
+        let torqueValue = obj.weight * obj.distance;
+
+        if (obj.side === 'left') {
+            leftTorque = leftTorque + torqueValue;
+        } else {
+            rightTorque = rightTorque + torqueValue;
+        }
+
+        console.log('sol tork:', leftTorque, 'sağ Tork:', rightTorque);
+    }
+
+
+    return {leftTorque,rightTorque}
+}
+
+// to move seesaw balance 
+function updateSeesawBalance() {
+
+}
