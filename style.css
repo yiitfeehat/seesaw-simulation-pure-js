@@ -211,8 +211,36 @@ body {
     5. WEIGHT BOXES 
    ========================================= */
 
-.weight-box{
+.weight-box {
     position: absolute;
-    pointer-events: none; /*fixing position bug*/
-    
+    pointer-events: none;
+    /*fixing position bug*/
+    bottom: 120%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    animation: topToBottom 0.5s ease-out;
+    transform: translateX(-50%);
+}
+
+@keyframes topToBottom {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -200px);
+    }
+
+    35% {
+        opacity: 0.2;
+        transform: translate(-50%, -100px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
 }
