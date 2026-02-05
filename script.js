@@ -113,6 +113,8 @@ function createRandomWeights(distance, side) {
     saveGame();
     playDropSounds(randomWeight);
 
+    addToLog(randomWeight, side, distance)
+
 }
 
 // ==========================================
@@ -297,4 +299,18 @@ function playResetSound() {
     soundReset.currentTime = 0;
 
     soundReset.play();
+}
+
+// ==========================================
+//  WEIGHT LOGS 
+// ==========================================
+
+const logList = document.querySelector('.log-list');
+function addToLog(weight, side, distance) {
+
+    const li = document.createElement('li');
+
+    li.innerHTML = `ⓘ <strong>Info:</strong> <span class="weight">${weight}kg</span> placed the <span class="${side}">${side}</span> side at ${distance}px.`;
+    li.classList.add('log-item')
+    logList.prepend(li);
 }

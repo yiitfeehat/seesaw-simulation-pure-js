@@ -32,6 +32,8 @@ body {
     justify-content: center;
     align-items: center;
     overflow-x: hidden;
+    font-family: "Rubik", sans-serif;
+
 }
 
 /* =========================================
@@ -244,4 +246,71 @@ body {
         opacity: 1;
         transform: translate(-50%, 0);
     }
+}
+
+/* =========================================
+    5. LOG LIST
+   ========================================= */
+
+.log-panel {
+    width: 90%;
+    max-width: 600px;
+    padding: 1rem;
+    background-color: var(--color-game-area-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px -1px rgba(0, 0, 0, 0.1);
+}
+
+.log-panel h2 {
+    font-size: 1rem;
+    margin: 4px;
+    color: var(--color-text-main);
+}
+
+.log-list {
+    height: 150px;
+    /* border: 2px solid red; */
+    display: flex;
+    flex-direction: column;
+    /* gap: 0.4rem; */
+    overflow-y: auto;
+}
+
+.log-item {
+    font-size: 0.8rem;
+    color: var(--color-text-main);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 0.35rem 0.2rem;
+    font-family: monospace;
+    animation: logAnimation 0.2s ease-in;
+}
+
+@keyframes logAnimation {
+    0% {
+        opacity: 1;
+        transform: translate(0, -40px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+}
+
+.log-item:last-child{
+    border-bottom: none;
+}
+
+.left {
+    color: blue;
+    /* Mavi */
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.right {
+    color: red;
+    /* Kırmızı */
+    font-weight: bold;
+    text-transform: uppercase;
 }
