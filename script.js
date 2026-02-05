@@ -116,8 +116,8 @@ function createRandomWeights(distance, side) {
 
 // her clickte güncellemek icin
 function updateGame() {
-    calculateTorque();
-    updateSeesawBalance();
+    let torqueResults = calculateTorque();
+    updateSeesawBalance(torqueResults.leftTorque, torqueResults.rightTorque);
 }
 
 // torque
@@ -140,10 +140,20 @@ function calculateTorque() {
     }
 
 
-    return {leftTorque,rightTorque}
+    return { leftTorque, rightTorque }
 }
 
 // to move seesaw balance 
-function updateSeesawBalance() {
+function updateSeesawBalance(leftTorque, rightTorque) {
+    let diffOfSides = rightTorque - leftTorque;
 
+    let plankAngle = diffOfSides / 10
+
+    if (plankAngle > 30) {
+        plankAngle = 30;
+    } else if (plankAngle < -30) {
+        plankAngle = -30;
+    }
+
+    plankElement.style.transform = `rotate(${plankAngle}deg)`;
 }
