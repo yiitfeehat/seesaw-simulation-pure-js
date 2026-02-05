@@ -100,15 +100,17 @@ function createRandomWeights(distance, side) {
 
     console.log('ağırlık eklendi')
 
-    let totalWeightsObj = {
+    let totalWeightObj = {
         weight: randomWeight,
         distance: distance, //absoluteDistance already
-        side: side
+        side: side,
+        color: randomColor
     }
 
-    gameState.objects.push(totalWeightsObj);
+    gameState.objects.push(totalWeightObj);
 
     updateGame();
+    saveGame();
 
 }
 
@@ -207,5 +209,56 @@ resetButton.addEventListener('click', () => {
     pauseButton.style.backgroundColor = '';
     plankElement.style.cursor = 'pointer';
     console.log('Oyun sıfırladım')
+
+    localStorage.removeItem('seesawGameData');
 })
 
+// ==========================================
+//  save to localStorage
+// ==========================================
+
+function saveGame() {
+    localStorage.setItem('seesawGameData', JSON.stringify(gameState.objects));
+}
+
+function loadGame() {
+    const data = localStorage.getItem('seesawGameData');
+
+    if (data) {
+        const objects = JSON.parse(data);
+
+        objects.forEach((item) => {
+
+            let newBox = document.createElement('div');
+            newBox.classList.add('weight-box');
+
+            newBox.textContent = item.weight + 'kg';
+            newBox.style.left = (item.side === 'left')
+                ? (300 - item.distance) + 'px'
+                : (300 + item.distance) + 'px';
+
+
+            let boxSize = 30 + (item.weight * 3);
+            newBox.style.width = boxSize + 'px';
+            newBox.style.height = boxSize + 'px';
+
+            const colors = ['red', 'yellow', 'cyan', 'purple', 'aqua', 'orange', 'green'];
+
+
+            newBox.style.backgroundColor = item.color;
+
+            plankElement.appendChild(newBox);
+
+
+            gameState.objects.push(item)
+
+        });
+
+        updateGame();
+
+
+    }
+}
+
+loadGame();
+console.log(gameState.objects)
