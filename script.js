@@ -111,6 +111,7 @@ function createRandomWeights(distance, side) {
 
     updateGame();
     saveGame();
+    playDropSounds(randomWeight);
 
 }
 
@@ -211,6 +212,8 @@ resetButton.addEventListener('click', () => {
     console.log('Oyun sıfırladım')
 
     localStorage.removeItem('seesawGameData');
+
+    playResetSound();
 })
 
 // ==========================================
@@ -262,3 +265,36 @@ function loadGame() {
 
 loadGame();
 console.log(gameState.objects)
+
+
+// ==========================================
+//  SOUND EFFECTS 
+// ==========================================
+
+const soundLight = new Audio('assets/sounds/light.mp3');
+const soundMedium = new Audio('assets/sounds/medium.mp3');
+const soundHeavy = new Audio('assets/sounds/heavy.mp3');
+const soundReset = new Audio('assets/sounds/reset.mp3');
+
+function playDropSounds(weight) {
+
+    if (weight < 4) {
+        selectedSound = soundLight;
+    } else if (weight < 8) {
+        selectedSound = soundMedium;
+    } else {
+        selectedSound = soundHeavy;
+    }
+
+    selectedSound.currentTime = 0; // for fixing rewind problem*
+
+
+    selectedSound.play();
+
+}
+
+function playResetSound() {
+    soundReset.currentTime = 0;
+
+    soundReset.play();
+}
