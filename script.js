@@ -157,3 +157,37 @@ function updateSeesawBalance(leftTorque, rightTorque) {
 
     plankElement.style.transform = `rotate(${plankAngle}deg)`;
 }
+
+// ==========================================
+//  CONTROLS - PAUSE/RESET
+// ==========================================
+
+pauseButton.addEventListener('click', () => {
+    gameState.isPaused = !gameState.isPaused;
+
+    if (gameState.isPaused === true) {
+        pauseButton.textContent = "Resume";
+        pauseButton.style.backgroundColor = 'gray';
+        console.log('Oyun duraklatıldı.');
+    } else {
+        pauseButton.textContent = "Pause";
+        pauseButton.style.backgroundColor = '';
+        console.log('Oyun devam ediyor.')
+    }
+
+})
+
+resetButton.addEventListener('click', () => {
+    gameState.objects = [];
+    gameState.isPaused = false;
+
+    let selectAllBoxes = document.querySelectorAll('.weight-box');
+
+    for (let i = 0; i < selectAllBoxes.length; i++) {
+        selectAllBoxes[i].remove();
+    }
+
+    plankElement.style.transform= 'rotate(0deg)';
+
+})
+
