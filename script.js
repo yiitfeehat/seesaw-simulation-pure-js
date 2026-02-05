@@ -38,6 +38,8 @@ console.log(leftWeightValue.textContent)*/
 
 plankElement.addEventListener('click', function (event) {
 
+    if (gameState.isPaused) return;
+
     let clickPosition = event.offsetX;
     let centerPoint = CONFIG.PLANK_LENGHT / 2;
 
@@ -124,6 +126,8 @@ function updateGame() {
 function calculateTorque() {
     let leftTorque = 0;
     let rightTorque = 0;
+    let leftTotalWeight = 0;
+    let rightTotalWeight = 0;
 
     for (let i = 0; i < gameState.objects.length; i++) {
         let obj = gameState.objects[i];
@@ -132,13 +136,18 @@ function calculateTorque() {
 
         if (obj.side === 'left') {
             leftTorque = leftTorque + torqueValue;
+            leftTotalWeight = leftTotalWeight + obj.weight;
         } else {
             rightTorque = rightTorque + torqueValue;
+            rightTotalWeight = rightTotalWeight + obj.weight;
+
         }
 
         console.log('sol tork:', leftTorque, 'sağ Tork:', rightTorque);
     }
 
+    leftWeightValue.textContent = leftTotalWeight + ' KG';
+    rightWeightValue.textContent = rightTotalWeight + ' KG';
 
     return { leftTorque, rightTorque }
 }
@@ -168,10 +177,12 @@ pauseButton.addEventListener('click', () => {
     if (gameState.isPaused === true) {
         pauseButton.textContent = "Resume";
         pauseButton.style.backgroundColor = 'gray';
+        plankElement.style.cursor = 'not-allowed';
         console.log('Oyun duraklatıldı.');
     } else {
         pauseButton.textContent = "Pause";
         pauseButton.style.backgroundColor = '';
+        plankElement.style.cursor = 'pointer';
         console.log('Oyun devam ediyor.')
     }
 
@@ -187,7 +198,14 @@ resetButton.addEventListener('click', () => {
         selectAllBoxes[i].remove();
     }
 
-    plankElement.style.transform= 'rotate(0deg)';
+    plankElement.style.transform = 'rotate(0deg)';
+    leftWeightValue.textContent = '0 KG';
+    rightWeightValue.textContent = '0 KG';
 
+    // fixed bug 
+    pauseButton.textContent = "Pause";
+    pauseButton.style.backgroundColor = '';
+    plankElement.style.cursor = 'pointer';
+    console.log('Oyun sıfırladım')
 })
 
