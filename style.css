@@ -103,7 +103,6 @@ body {
     align-items: center;
     justify-content: flex-end;
     padding: 1rem;
-    overflow: hidden;
     background-color: var(--color-game-area-bg);
 
 }
@@ -233,12 +232,12 @@ body {
 @keyframes topToBottom {
     0% {
         opacity: 1;
-        transform: translate(-50%, -300px);
+        transform: translate(-50%, -200px);
     }
 
     35% {
         opacity: 1;
-        transform: translate(-50%, -150px);
+        transform: translate(-50%, -100px);
     }
 
     100% {
