@@ -69,7 +69,7 @@ function addToLog(weight, side, distance) {
     if (!logList) return;
 
     const logItem = document.createElement('li');
-    logItem.innerHTML = ` ⓘ <strong>Info:</strong> <b>${weight}kg</b> placed the <span class="${side}">${side}</span> side at ${distance}px.`;
+    logItem.innerHTML = ` ⓘ <strong>Info:</strong> <b>${weight}kg</b> placed the <span class="${side}">${side}</span> side at ${Math.round(distance)}px.`;
     logItem.classList.add('log-item');
 
     logList.prepend(logItem);
