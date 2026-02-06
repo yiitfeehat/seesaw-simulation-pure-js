@@ -24,6 +24,7 @@ const gameState = {
 const plankElement = document.getElementById('plank');
 const leftWeightDisplay = document.getElementById('total-weight-left');
 const rightWeightDisplay = document.getElementById('total-weight-right');
+const angleDisplay = document.getElementById('angle-display');
 
 const pauseButton = document.getElementById('btn-pause');
 const resetButton = document.getElementById('btn-reset');
@@ -166,6 +167,7 @@ function updateSeesawBalance(leftTorque, rightTorque) {
     }
 
     plankElement.style.transform = `rotate(${plankAngle}deg)`;
+    angleDisplay.textContent = Math.round(plankAngle) + '°';
 }
 
 
@@ -256,6 +258,8 @@ resetButton.addEventListener('click', () => {
     pauseButton.style.backgroundColor = '';
     plankElement.style.cursor = 'pointer';
 
+
+    angleDisplay.textContent = '0°';
     localStorage.removeItem('seesawGameData');
     if (logList) logList.innerHTML = '';
 

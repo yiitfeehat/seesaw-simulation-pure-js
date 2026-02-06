@@ -53,7 +53,8 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 2rem;
-    padding: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 8px -1px rgba(0, 0, 0, 0.2);
 }
 
 .app-header h1 {
@@ -98,13 +99,17 @@ body {
 }
 
 .stat-box .value {
-    font-size: 1rem;
+    font-size: 1.3rem;
     font-weight: 900;
     color: var(--color-text-main);
 }
 
 #total-weight-left {
     color: var(--color-info);
+}
+
+#angle-display {
+    color: var(--color-text-main);
 }
 
 #total-weight-right {
@@ -201,7 +206,7 @@ body {
    ========================================= */
 
 .simulation-area {
-    width: 100%;
+    width: 95%;
     height: 400px;
     display: flex;
     flex-direction: column;
@@ -210,6 +215,8 @@ body {
     padding: 1rem;
     background-color: var(--color-game-area-bg);
     border: none;
+    box-shadow: 0 4px 8px -1px rgba(0, 0, 0, 0.2);
+
 }
 
 .seesaw-container {
@@ -221,6 +228,7 @@ body {
     align-items: center;
     position: relative;
     border: none;
+    
 }
 
 .plank {
@@ -271,7 +279,7 @@ body {
 .weight-box {
     position: absolute;
     pointer-events: none;
-    bottom: 120%;
+    bottom: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
