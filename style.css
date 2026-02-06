@@ -220,7 +220,7 @@ body {
 }
 
 .seesaw-container {
-    width: 600px;
+    width: var(--plank-width);
     bottom: calc(50% - 50px);
     display: flex;
     flex-direction: column;
@@ -228,7 +228,6 @@ body {
     align-items: center;
     position: relative;
     border: none;
-    
 }
 
 .plank {
@@ -318,5 +317,54 @@ body {
     100% {
         opacity: 1;
         transform: translate(0, 0);
+    }
+}
+
+/* =========================================
+   7. RESPONSIVE DESIGN (MOBILE)
+   ========================================= */
+
+@media (max-width: 600px) {
+    body {
+        height: auto;
+        padding: 1rem 0;
+        align-items: flex-start;
+    }
+
+    #app {
+        padding: 1rem;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .ui-panel {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .stat-box {
+        min-width: 30%;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+        white-space: nowrap;
+    }
+
+    .simulation-area {
+        padding: 0.5rem;
+        width: 100%;
+        height: auto;
+        min-height: 300px;
+        justify-content: center;
+    }
+
+    .seesaw-container {
+        width: 100%;
+        max-width: 100%;
+
+    }
+
+    h1 {
+        font-size: 1.25rem ;
     }
 }

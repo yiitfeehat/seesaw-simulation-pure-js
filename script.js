@@ -88,9 +88,13 @@ function createRandomWeights(distance, side) {
     weightElement.classList.add('weight-box');
     weightElement.textContent = randomWeight + 'kg';
 
-    weightElement.style.left = (side === 'left')
-        ? ((CONFIG.PLANK_LENGTH / 2) - distance) + 'px'
-        : ((CONFIG.PLANK_LENGTH / 2) + distance) + 'px';
+    const logicalDistance = (side === 'left') ? -distance : distance; // Turnary better ^^
+
+    // 600px plank, 300px half. logicalDistance/300 gives ratio.
+    const percentFromCenter = (logicalDistance / 300) * 50;
+    const finalPercent = 50 + percentFromCenter;
+
+    weightElement.style.left = finalPercent + '%';
 
     const size = 30 + (randomWeight * CONFIG.SCALE_FACTOR);
     weightElement.style.width = size + 'px';
@@ -190,9 +194,10 @@ function loadGame() {
             weightElement.classList.add('weight-box');
             weightElement.textContent = item.weight + 'kg';
 
-            weightElement.style.left = (item.side === 'left')
-                ? ((CONFIG.PLANK_LENGTH / 2) - item.distance) + 'px'
-                : ((CONFIG.PLANK_LENGTH / 2) + item.distance) + 'px';
+            // Responsive positioning for loaded items
+            const logicalDist = (item.side === 'left') ? -item.distance : item.distance;
+            const percent = 50 + ((logicalDist / 300) * 50);
+            weightElement.style.left = percent + '%';
 
             const size = 30 + (item.weight * 3);
             weightElement.style.width = size + 'px';
@@ -217,14 +222,18 @@ function loadGame() {
 plankElement.addEventListener('click', function (event) {
     if (gameState.isPaused) return;
 
-    const clickPosition = event.offsetX;
+    const clickX = event.offsetX;
+    const currentWidth = plankElement.offsetWidth;
+    const scaleFactor = CONFIG.PLANK_LENGTH / currentWidth;
+    const logicalClickX = clickX * scaleFactor;
+
     const centerPoint = CONFIG.PLANK_LENGTH / 2;
-    const distance = clickPosition - centerPoint;
+    const distanceRaw = logicalClickX - centerPoint;
 
-    const side = (distance < 0) ? 'left' : 'right';
-    const absoluteDistance = Math.abs(distance);
+    const distance = Math.abs(distanceRaw);
+    const side = (distanceRaw < 0) ? 'left' : 'right';
 
-    createRandomWeights(absoluteDistance, side);
+    createRandomWeights(distance, side);
 });
 
 pauseButton.addEventListener('click', () => {
