@@ -1,133 +1,135 @@
-// ==========================================
-// HTML ELEMENTS 
-// ==========================================
 
-// Game settings variables. I used object its could be clean.
+// ==========================================
+// CONFIG & GAME STATUS
+// ==========================================
 
 const CONFIG = {
-    PLANK_LENGHT: 600,
+    PLANK_LENGTH: 600,
     MIN_WEIGHT: 1,
-    MAX_WEIGHT: 10
+    MAX_WEIGHT: 10,
+    MAX_ANGLE: 30,
+    SCALE_FACTOR: 3
 };
 
-// oyun durumu
-
-let gameState = {
+const gameState = {
     isPaused: false,
     objects: []
 };
 
-// PLANK ELEMENT
-const plankElement = document.getElementById('plank');
-// Weights left right
-const leftWeightValue = document.getElementById('total-weight-left');
-const rightWeightValue = document.getElementById('total-weight-right');
 
-//Our Buttons 
+// ==========================================
+// HTML ELEMENTS (DOM)
+// ==========================================
+
+const plankElement = document.getElementById('plank');
+const leftWeightDisplay = document.getElementById('total-weight-left');
+const rightWeightDisplay = document.getElementById('total-weight-right');
 
 const pauseButton = document.getElementById('btn-pause');
 const resetButton = document.getElementById('btn-reset');
+const logList = document.querySelector('.log-list');
 
-/*console.log('Deneme');
-console.log(CONFIG.PLANK_LENGHT)
-console.log(leftWeightValue.textContent)*/
 
 // ==========================================
-// PLANK AND CLICK LOGIC 
+// SOUND EFFECTS (+)
 // ==========================================
 
-plankElement.addEventListener('click', function (event) {
+const soundLight = new Audio('assets/sounds/light.mp3');
+const soundMedium = new Audio('assets/sounds/medium.mp3');
+const soundHeavy = new Audio('assets/sounds/heavy.mp3');
+const soundReset = new Audio('assets/sounds/reset.mp3');
 
-    if (gameState.isPaused) return;
 
-    let clickPosition = event.offsetX;
-    let centerPoint = CONFIG.PLANK_LENGHT / 2;
+// ==========================================
+// FUNCTIONS
+// ==========================================
 
-    //for calculate distance from center point
+function playDropSounds(weight) {
+    let selectedSound;
 
-    let distance = clickPosition - centerPoint;
-
-    let side = ''; // null? 
-    if (distance < 0) {
-        side = 'left';
+    if (weight < 4) {
+        selectedSound = soundLight;
+    } else if (weight < 8) {
+        selectedSound = soundMedium;
     } else {
-        side = 'right';
+        selectedSound = soundHeavy;
     }
 
-    let absoluteDistance = Math.abs(distance); // distance value should be positive value
+    selectedSound.currentTime = 0;
+    selectedSound.play().catch(e => { /* mute fix */ });
+}
 
-    console.log('Tıklanan yer:', clickPosition)
-    console.log('Orta noktam', centerPoint)
-    console.log('Mutlak uzaklik', absoluteDistance)
-    console.log('right or left ? ', side)
+function playResetSound() {
+    soundReset.currentTime = 0;
+    soundReset.play().catch(e => { /* mute fix */ });
+}
 
-    createRandomWeights(absoluteDistance, side);
-})
+function addToLog(weight, side, distance) {
+    if (!logList) return;
+
+    const logItem = document.createElement('li');
+    logItem.innerHTML = ` ⓘ <strong>Info:</strong> <b>${weight}kg</b> placed the <span class="${side}">${side}</span> side at ${distance}px.`;
+    logItem.classList.add('log-item');
+
+    logList.prepend(logItem);
+}
+
 
 // ==========================================
-//  ADDING WEIGHTS (CREATE WEIGHT) 
+// TORQUE & PYHSICS & LOGIC (CORE: EVERYTHING)
 // ==========================================
 
 function createRandomWeights(distance, side) {
 
-    // Rastgele Sayı üretelim.
+    const randomWeight = Math.ceil(Math.random() * CONFIG.MAX_WEIGHT);
 
-    let randomWeight = Math.ceil(Math.random() * CONFIG.MAX_WEIGHT);
-    // We can use math.floor too but its easiest way.
+    const weightElement = document.createElement('div');
+    weightElement.classList.add('weight-box');
+    weightElement.textContent = randomWeight + 'kg';
 
-    let newBox = document.createElement('div');
+    weightElement.style.left = (side === 'left')
+        ? ((CONFIG.PLANK_LENGTH / 2) - distance) + 'px'
+        : ((CONFIG.PLANK_LENGTH / 2) + distance) + 'px';
 
-    newBox.classList.add('weight-box');
+    const size = 30 + (randomWeight * CONFIG.SCALE_FACTOR);
+    weightElement.style.width = size + 'px';
+    weightElement.style.height = size + 'px';
 
-    newBox.textContent = randomWeight + 'kg';
-    newBox.style.left = (side === 'left')
-        ? (300 - distance) + 'px'
-        : (300 + distance) + 'px';
+    // Chic Color Palette (Matching Slate/Indigo theme)
+    const colors = [
+        '#ef4444', // Red-500
+        '#3b82f6', // Blue-500
+        '#10b981', // Emerald-500
+        '#f59e0b', // Amber-500
+        '#8b5cf6', // Violet-500
+        '#06b6d4', // Cyan-500
+        '#ec4899'  // Pink-500
+    ];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    weightElement.style.backgroundColor = randomColor;
 
-    //! newBox.style.transform = ??
+    plankElement.appendChild(weightElement);
 
-    let boxSize = 30 + (randomWeight * 3);
-    newBox.style.width = boxSize + 'px';
-    newBox.style.height = boxSize + 'px';
-
-    const colors = ['red', 'yellow', 'cyan', 'purple', 'aqua', 'orange', 'green'];
-
-    let randomColor = colors[Math.floor(Math.random() * colors.length)];
-
-    newBox.style.backgroundColor = randomColor; //now, the box colored.
-
-    plankElement.appendChild(newBox);
-
-    console.log('ağırlık eklendi')
-
-    let totalWeightObj = {
+    const weightData = {
         weight: randomWeight,
-        distance: distance, //absoluteDistance already
+        distance: distance,
         side: side,
         color: randomColor
-    }
+    };
 
-    gameState.objects.push(totalWeightObj);
+    gameState.objects.push(weightData);
 
     updateGame();
     saveGame();
     playDropSounds(randomWeight);
-
-    addToLog(randomWeight, side, distance)
-
+    addToLog(randomWeight, side, distance);
 }
 
-// ==========================================
-//  PHYSICS & CALCULATION 
-// ==========================================
-
-// her clickte güncellemek icin
 function updateGame() {
-    let torqueResults = calculateTorque();
+    const torqueResults = calculateTorque();
     updateSeesawBalance(torqueResults.leftTorque, torqueResults.rightTorque);
 }
 
-// torque
 function calculateTorque() {
     let leftTorque = 0;
     let rightTorque = 0;
@@ -135,9 +137,8 @@ function calculateTorque() {
     let rightTotalWeight = 0;
 
     for (let i = 0; i < gameState.objects.length; i++) {
-        let obj = gameState.objects[i];
-
-        let torqueValue = obj.weight * obj.distance;
+        const obj = gameState.objects[i];
+        const torqueValue = obj.weight * obj.distance;
 
         if (obj.side === 'left') {
             leftTorque = leftTorque + torqueValue;
@@ -145,81 +146,31 @@ function calculateTorque() {
         } else {
             rightTorque = rightTorque + torqueValue;
             rightTotalWeight = rightTotalWeight + obj.weight;
-
         }
-
-        console.log('sol tork:', leftTorque, 'sağ Tork:', rightTorque);
     }
 
-    leftWeightValue.textContent = leftTotalWeight + ' KG';
-    rightWeightValue.textContent = rightTotalWeight + ' KG';
+    leftWeightDisplay.textContent = leftTotalWeight + ' KG';
+    rightWeightDisplay.textContent = rightTotalWeight + ' KG';
 
-    return { leftTorque, rightTorque }
+    return { leftTorque, rightTorque };
 }
 
-// to move seesaw balance 
 function updateSeesawBalance(leftTorque, rightTorque) {
-    let diffOfSides = rightTorque - leftTorque;
+    const diffOfSides = rightTorque - leftTorque;
+    let plankAngle = diffOfSides / 10;
 
-    let plankAngle = diffOfSides / 10
-
-    if (plankAngle > 30) {
-        plankAngle = 30;
-    } else if (plankAngle < -30) {
-        plankAngle = -30;
+    if (plankAngle > CONFIG.MAX_ANGLE) {
+        plankAngle = CONFIG.MAX_ANGLE;
+    } else if (plankAngle < -CONFIG.MAX_ANGLE) {
+        plankAngle = -CONFIG.MAX_ANGLE;
     }
 
     plankElement.style.transform = `rotate(${plankAngle}deg)`;
 }
 
-// ==========================================
-//  CONTROLS - PAUSE/RESET
-// ==========================================
-
-pauseButton.addEventListener('click', () => {
-    gameState.isPaused = !gameState.isPaused;
-
-    if (gameState.isPaused === true) {
-        pauseButton.textContent = "Resume";
-        pauseButton.style.backgroundColor = 'gray';
-        plankElement.style.cursor = 'not-allowed';
-        console.log('Oyun duraklatıldı.');
-    } else {
-        pauseButton.textContent = "Pause";
-        pauseButton.style.backgroundColor = '';
-        plankElement.style.cursor = 'pointer';
-        console.log('Oyun devam ediyor.')
-    }
-
-})
-
-resetButton.addEventListener('click', () => {
-    gameState.objects = [];
-    gameState.isPaused = false;
-
-    let selectAllBoxes = document.querySelectorAll('.weight-box');
-
-    for (let i = 0; i < selectAllBoxes.length; i++) {
-        selectAllBoxes[i].remove();
-    }
-
-    plankElement.style.transform = 'rotate(0deg)';
-    leftWeightValue.textContent = '0 KG';
-    rightWeightValue.textContent = '0 KG';
-
-    // fixed bug 
-    pauseButton.textContent = "Pause";
-    pauseButton.style.backgroundColor = '';
-    plankElement.style.cursor = 'pointer';
-    console.log('Oyun sıfırladım')
-
-    localStorage.removeItem('seesawGameData');
-
-    playResetSound();
-})
 
 // ==========================================
-//  save to localStorage
+// LOCALSTORAGE FNC's
 // ==========================================
 
 function saveGame() {
@@ -233,84 +184,84 @@ function loadGame() {
         const objects = JSON.parse(data);
 
         objects.forEach((item) => {
+            const weightElement = document.createElement('div');
+            weightElement.classList.add('weight-box');
+            weightElement.textContent = item.weight + 'kg';
 
-            let newBox = document.createElement('div');
-            newBox.classList.add('weight-box');
+            weightElement.style.left = (item.side === 'left')
+                ? ((CONFIG.PLANK_LENGTH / 2) - item.distance) + 'px'
+                : ((CONFIG.PLANK_LENGTH / 2) + item.distance) + 'px';
 
-            newBox.textContent = item.weight + 'kg';
-            newBox.style.left = (item.side === 'left')
-                ? (300 - item.distance) + 'px'
-                : (300 + item.distance) + 'px';
+            const size = 30 + (item.weight * 3);
+            weightElement.style.width = size + 'px';
+            weightElement.style.height = size + 'px';
+            weightElement.style.backgroundColor = item.color;
 
+            plankElement.appendChild(weightElement);
 
-            let boxSize = 30 + (item.weight * 3);
-            newBox.style.width = boxSize + 'px';
-            newBox.style.height = boxSize + 'px';
-
-            const colors = ['red', 'yellow', 'cyan', 'purple', 'aqua', 'orange', 'green'];
-
-
-            newBox.style.backgroundColor = item.color;
-
-            plankElement.appendChild(newBox);
-
-
-            gameState.objects.push(item)
-
+            gameState.objects.push(item);
+            addToLog(item.weight, item.side, item.distance);
         });
 
         updateGame();
-
-
     }
 }
 
-loadGame();
-console.log(gameState.objects)
-
 
 // ==========================================
-//  SOUND EFFECTS 
+// PAUSE & RESET - CONTROL BUTTONS
 // ==========================================
 
-const soundLight = new Audio('assets/sounds/light.mp3');
-const soundMedium = new Audio('assets/sounds/medium.mp3');
-const soundHeavy = new Audio('assets/sounds/heavy.mp3');
-const soundReset = new Audio('assets/sounds/reset.mp3');
+plankElement.addEventListener('click', function (event) {
+    if (gameState.isPaused) return;
 
-function playDropSounds(weight) {
+    const clickPosition = event.offsetX;
+    const centerPoint = CONFIG.PLANK_LENGTH / 2;
+    const distance = clickPosition - centerPoint;
 
-    if (weight < 4) {
-        selectedSound = soundLight;
-    } else if (weight < 8) {
-        selectedSound = soundMedium;
+    const side = (distance < 0) ? 'left' : 'right';
+    const absoluteDistance = Math.abs(distance);
+
+    createRandomWeights(absoluteDistance, side);
+});
+
+pauseButton.addEventListener('click', () => {
+    gameState.isPaused = !gameState.isPaused;
+
+    if (gameState.isPaused === true) {
+        pauseButton.textContent = "Resume";
+        pauseButton.style.backgroundColor = 'gray';
+        plankElement.style.cursor = 'not-allowed';
     } else {
-        selectedSound = soundHeavy;
+        pauseButton.textContent = "Pause";
+        pauseButton.style.backgroundColor = '';
+        plankElement.style.cursor = 'pointer';
+    }
+});
+
+resetButton.addEventListener('click', () => {
+    gameState.objects = [];
+    gameState.isPaused = false;
+
+    const selectAllBoxes = document.querySelectorAll('.weight-box');
+    for (let i = 0; i < selectAllBoxes.length; i++) {
+        selectAllBoxes[i].remove();
     }
 
-    selectedSound.currentTime = 0; // for fixing rewind problem*
+    plankElement.style.transform = 'rotate(0deg)';
+    leftWeightDisplay.textContent = '0 KG';
+    rightWeightDisplay.textContent = '0 KG';
+
+    pauseButton.textContent = "Pause";
+    pauseButton.style.backgroundColor = '';
+    plankElement.style.cursor = 'pointer';
+
+    localStorage.removeItem('seesawGameData');
+    if (logList) logList.innerHTML = '';
+
+    playResetSound();
+});
 
 
-    selectedSound.play();
-
-}
-
-function playResetSound() {
-    soundReset.currentTime = 0;
-
-    soundReset.play();
-}
-
-// ==========================================
-//  WEIGHT LOGS 
-// ==========================================
-
-const logList = document.querySelector('.log-list');
-function addToLog(weight, side, distance) {
-
-    const li = document.createElement('li');
-
-    li.innerHTML = `ⓘ <strong>Info:</strong> <span class="weight">${weight}kg</span> placed the <span class="${side}">${side}</span> side at ${distance}px.`;
-    li.classList.add('log-item')
-    logList.prepend(li);
-}
+// Start Game
+loadGame();

@@ -1,23 +1,31 @@
 /* =========================================
    1. VARIABLES 
    ========================================= */
-
 :root {
-    --color-bg: #F3F4F6;
-    --color-primary: #4F46E5;
-    --color-secondary: #E0E7FF;
-    --color-text-main: #1F2937;
-    --color-text-light: #6B7280;
-    --color-game-area-bg: #FFFFFF;
-    --color-plank: #374151;
-    --color-pivot: #DC2626;
+    --color-bg: #f8fafc;
+    --color-surface: #ffffff;
+    --color-primary: #6366f1;
+    --color-primary-hover: #4f46e5;
+    --color-secondary: #e2e8f0;
+    --color-text-main: #1e293b;
+    --color-text-light: #64748b;
+    --color-danger: #ef4444;
+    --color-danger-hover: #dc2626;
+    --color-info: #3b82f6;
+    --color-success: #22c55e;
+    --color-warning: #f59e0b;
+    --color-game-area-bg: #f1f5f9;
+    --color-plank: #334155;
+    --color-pivot: #94a3b8;
 
-    /* Dimensions */
     --plank-width: min(600px, 90vw);
     --plank-height: 10px;
     --pivot-size: 40px;
 }
 
+/* =========================================
+   2. RESET & BASE STYLES
+   ========================================= */
 * {
     margin: 0;
     padding: 0;
@@ -33,13 +41,11 @@ body {
     align-items: center;
     overflow-x: hidden;
     font-family: "Rubik", sans-serif;
-
 }
 
 /* =========================================
-   2.  UI & Stats
+   3. LAYOUT & CONTAINER
    ========================================= */
-
 #app {
     width: 100%;
     max-width: 800px;
@@ -54,6 +60,7 @@ body {
     font-size: 1.5rem;
     text-align: center;
     margin-bottom: 0.3rem;
+    color: var(--color-text-main);
 }
 
 .app-header p {
@@ -69,8 +76,12 @@ body {
     gap: 1rem;
 }
 
+/* =========================================
+   4. COMPONENTS (Stats, Buttons, Logs)
+   ========================================= */
+
 .stat-box {
-    background-color: #FFFFFF;
+    background-color: var(--color-surface);
     padding: 1rem;
     border-radius: 8px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
@@ -89,86 +100,16 @@ body {
 .stat-box .value {
     font-size: 1rem;
     font-weight: 900;
-    color: var(--color-primary);
+    color: var(--color-text-main);
 }
 
-/* =========================================
-   3. ggame & simulation area 
-   ========================================= */
-
-.simulation-area {
-    border: 2px solid red;
-    width: 100%;
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 1rem;
-    background-color: var(--color-game-area-bg);
-
+#total-weight-left {
+    color: var(--color-info);
 }
 
-.seesaw-container {
-    border: 2px solid red;
-    width: 600px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+#total-weight-right {
+    color: var(--color-danger);
 }
-
-.plank {
-    width: 100%;
-    height: var(--plank-height);
-    background-color: var(--color-plank);
-    position: relative;
-    border-radius: 20px;
-    cursor: pointer;
-
-    transition: transform 1.5s ease-in-out;
-
-}
-
-.ruler-markers {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0px;
-    /* border: 3px solid orange; */
-}
-
-.marker {
-    position: absolute;
-    top: 10px;
-    /* margin-left: -4px; */
-    color: grey;
-    font-weight: 600;
-    font-size: 0.75rem;
-    transform: translateX(-50%);
-    /* better than margin-left; */
-    pointer-events: none;
-
-}
-
-.center-point {
-    display: none;
-}
-
-.pivot {
-    width: 0px;
-    height: 0px;
-    /* border: 25px solid red; */
-    border-left: calc(var(--pivot-size)/2) solid transparent;
-    border-right: calc(var(--pivot-size)/2) solid transparent;
-    border-bottom: var(--pivot-size) solid var(--color-pivot);
-    margin-top: -3px;
-}
-
-/* =========================================
-   4. PAUSE / RESET (CONTROL BUTTONS)
-   ========================================= */
 
 .controls {
     display: flex;
@@ -187,37 +128,149 @@ body {
 }
 
 .btn-pause {
-    background-color: rgb(0, 128, 255);
+    background-color: var(--color-primary);
 }
 
 .btn-pause:hover {
-    background-color: rgb(0, 51, 255);
+    background-color: var(--color-primary-hover);
     box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.1);
-
-
-
 }
 
 .btn-reset {
-    background-color: red;
-
+    background-color: var(--color-danger);
 }
 
 .btn-reset:hover {
-    background-color: rgb(112, 3, 3);
+    background-color: var(--color-danger-hover);
     box-shadow: 0 1px 1px 2px rgba(112, 3, 3, 0.1);
+}
 
+.log-panel {
+    width: 90%;
+    max-width: 600px;
+    padding: 0.5rem 0.75rem;
+    padding-top: 0rem;
+    background-color: var(--color-surface);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px -1px rgba(0, 0, 0, 0.1);
+}
 
+.log-panel h2 {
+    font-size: 1rem;
+    margin: 4px;
+    color: var(--color-text-main);
+    border-bottom: 1px solid var(--color-secondary);
+    padding: 0.75rem 1rem;
+}
+
+.log-list {
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.log-item {
+    font-size: 0.8rem;
+    color: var(--color-text-main);
+    padding: 0.35rem 0.2rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    display: block;
+    font-family: monospace;
+    animation: logAnimation 0.2s ease-in;
+}
+
+.log-item:last-child {
+    border-bottom: none;
+}
+
+.left {
+    color: var(--color-info);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.right {
+    color: var(--color-danger);
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 /* =========================================
-    5. WEIGHT BOXES 
+   5. GAME AREA (Simulation)
+   ========================================= */
+
+.simulation-area {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem;
+    background-color: var(--color-game-area-bg);
+    border: none;
+}
+
+.seesaw-container {
+    width: 600px;
+    bottom: calc(50% - 50px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border: none;
+}
+
+.plank {
+    width: 100%;
+    height: var(--plank-height);
+    background-color: var(--color-plank);
+    position: relative;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: transform 1.5s ease-in-out;
+}
+
+.pivot {
+    width: 0px;
+    height: 0px;
+    border-left: calc(var(--pivot-size)/2) solid transparent;
+    border-right: calc(var(--pivot-size)/2) solid transparent;
+    border-bottom: var(--pivot-size) solid var(--color-pivot);
+    margin-top: -3px;
+}
+
+.ruler-markers {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0px;
+}
+
+.marker {
+    position: absolute;
+    top: 10px;
+    color: var(--color-text-light);
+    font-weight: 600;
+    font-size: 0.75rem;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.center-point {
+    display: none;
+}
+
+/* =========================================
+   6. DYNAMIC ELEMENTS (Weights)
    ========================================= */
 
 .weight-box {
     position: absolute;
     pointer-events: none;
-    /*fixing position bug*/
     bottom: 120%;
     display: flex;
     justify-content: center;
@@ -233,12 +286,12 @@ body {
 
 @keyframes topToBottom {
     0% {
-        opacity: 1;
+        opacity: 0;
         transform: translate(-50%, -200px);
     }
 
     35% {
-        opacity: 1;
+        opacity: 0.85;
         transform: translate(-50%, -100px);
     }
 
@@ -246,43 +299,6 @@ body {
         opacity: 1;
         transform: translate(-50%, 0);
     }
-}
-
-/* =========================================
-    5. LOG LIST
-   ========================================= */
-
-.log-panel {
-    width: 90%;
-    max-width: 600px;
-    padding: 1rem;
-    background-color: var(--color-game-area-bg);
-    border-radius: 8px;
-    box-shadow: 0 4px 8px -1px rgba(0, 0, 0, 0.1);
-}
-
-.log-panel h2 {
-    font-size: 1rem;
-    margin: 4px;
-    color: var(--color-text-main);
-}
-
-.log-list {
-    height: 150px;
-    /* border: 2px solid red; */
-    display: flex;
-    flex-direction: column;
-    /* gap: 0.4rem; */
-    overflow-y: auto;
-}
-
-.log-item {
-    font-size: 0.8rem;
-    color: var(--color-text-main);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 0.35rem 0.2rem;
-    font-family: monospace;
-    animation: logAnimation 0.2s ease-in;
 }
 
 @keyframes logAnimation {
@@ -295,22 +311,4 @@ body {
         opacity: 1;
         transform: translate(0, 0);
     }
-}
-
-.log-item:last-child{
-    border-bottom: none;
-}
-
-.left {
-    color: blue;
-    /* Mavi */
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.right {
-    color: red;
-    /* Kırmızı */
-    font-weight: bold;
-    text-transform: uppercase;
 }
